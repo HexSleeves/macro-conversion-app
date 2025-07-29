@@ -27,7 +27,7 @@
   - Add TypeScript prop definitions for all components
   - _Requirements: 1.1, 7.1, 7.2_
 
-- [ ] 5. Build FoodForm input component
+- [x] 5. Build FoodForm input component
   - Create form inputs for food name, weights, and macronutrient values
   - Implement unit selection dropdowns for raw and cooked weights
   - Add real-time input validation with error message display

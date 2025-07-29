@@ -3,8 +3,8 @@
  */
 
 import type {
-	FoodData,
 	CalculationResults,
+	FoodData,
 	SavedFood,
 	ValidationErrors,
 } from "./types";

@@ -1,11 +1,11 @@
-import { useState, useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
+import type { MacroCalculatorProps } from "@/lib/component-types";
 import type {
-	FoodData,
 	CalculationResults,
+	FoodData,
 	SavedFood,
 	ValidationErrors,
 } from "@/lib/types";
-import type { MacroCalculatorProps } from "@/lib/component-types";
 import FoodForm from "./FoodForm";
 import MacroDisplay from "./MacroDisplay";
 import SavedFoods from "./SavedFoods";
@@ -44,7 +44,7 @@ export default function MacroCalculator({ className }: MacroCalculatorProps) {
 		// Placeholder - actual calculations will be implemented in task 6
 		// This will contain the core calculation logic
 		return null;
-	}, [foodData]);
+	}, []);
 
 	// Validation state - determines if calculations can be performed
 	const isCalculationValid = useMemo(() => {

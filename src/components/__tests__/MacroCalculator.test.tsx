@@ -1,5 +1,5 @@
-import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
+import { describe, expect, it } from "vitest";
 import MacroCalculator from "../MacroCalculator";
 
 describe("MacroCalculator Component", () => {
@@ -17,9 +17,6 @@ describe("MacroCalculator Component", () => {
 
 		// Check that placeholder content is shown
 		expect(
-			screen.getByText("Food form inputs will be implemented in task 5"),
-		).toBeInTheDocument();
-		expect(
 			screen.getByText("Enter food details to see calculation results"),
 		).toBeInTheDocument();
 		expect(
@@ -27,17 +24,18 @@ describe("MacroCalculator Component", () => {
 		).toBeInTheDocument();
 	});
 
-	it("renders form inputs in disabled state", () => {
+	it("renders form inputs in enabled state", () => {
 		render(<MacroCalculator />);
 
-		// Check that form inputs exist but are disabled
-		const foodNameInput = screen.getByPlaceholderText("Enter food name");
-		const rawWeightInput = screen.getByPlaceholderText("0");
-		const unitSelect = screen.getByDisplayValue("g");
+		// Check that form inputs exist and are enabled
+		const foodNameInput = screen.getByPlaceholderText(
+			"Enter food name (e.g., Chicken Breast)",
+		);
+		const rawWeightInputs = screen.getAllByPlaceholderText("0");
 
-		expect(foodNameInput).toBeDisabled();
-		expect(rawWeightInput).toBeDisabled();
-		expect(unitSelect).toBeDisabled();
+		expect(foodNameInput).toBeEnabled();
+		expect(rawWeightInputs[0]).toBeEnabled(); // Raw weight input
+		expect(rawWeightInputs[1]).toBeEnabled(); // Cooked weight input
 	});
 
 	it("renders save button in disabled state", () => {
