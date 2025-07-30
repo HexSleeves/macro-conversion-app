@@ -20,7 +20,6 @@ export interface FoodFormProps {
 }
 
 export interface MacroDisplayProps {
-	rawData: FoodData;
 	calculationResults: CalculationResults | null;
 	isCalculationValid: boolean;
 }

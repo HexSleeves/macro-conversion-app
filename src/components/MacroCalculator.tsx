@@ -1,4 +1,11 @@
 import { useCallback, useMemo, useState } from "react";
+import {
+	adjustMacrosForCooking,
+	calculateCookingLoss,
+	calculateNutrientDensity,
+	formatMacroData,
+	getAllWeightConversions,
+} from "@/lib/calculations";
 import type { MacroCalculatorProps } from "@/lib/component-types";
 import type {
 	CalculationResults,
@@ -6,6 +13,7 @@ import type {
 	SavedFood,
 	ValidationErrors,
 } from "@/lib/types";
+import { formatWeight } from "@/lib/weightUtils";
 import FoodForm from "./FoodForm";
 import MacroDisplay from "./MacroDisplay";
 import SavedFoods from "./SavedFoods";
@@ -39,13 +47,6 @@ export default function MacroCalculator({ className }: MacroCalculatorProps) {
 		{},
 	);
 
-	// Calculation results (will be implemented in later tasks)
-	const calculationResults = useMemo<CalculationResults | null>(() => {
-		// Placeholder - actual calculations will be implemented in task 6
-		// This will contain the core calculation logic
-		return null;
-	}, []);
-
 	// Validation state - determines if calculations can be performed
 	const isCalculationValid = useMemo(() => {
 		const hasNoValidationErrors = Object.values(validationErrors).every(
@@ -54,10 +55,99 @@ export default function MacroCalculator({ className }: MacroCalculatorProps) {
 		const hasRequiredData =
 			foodData.name.trim() !== "" &&
 			foodData.rawWeight > 0 &&
-			foodData.cookedWeight > 0;
+			foodData.cookedWeight > 0 &&
+			foodData.cookedWeight <= foodData.rawWeight;
 
-		return hasNoValidationErrors && hasRequiredData;
+		// Check if at least one macro value is provided
+		const hasMacroData = Object.values(foodData.rawMacros).some(
+			(value) => value > 0,
+		);
+
+		return hasNoValidationErrors && hasRequiredData && hasMacroData;
 	}, [validationErrors, foodData]);
+
+	// Real-time calculation results
+	const calculationResults = useMemo<CalculationResults | null>(() => {
+		// Only calculate if we have valid data
+		if (!isCalculationValid) {
+			return null;
+		}
+
+		try {
+			// Calculate cooking loss percentage
+			const rawWeightInGrams = foodData.rawWeight;
+			const cookedWeightInGrams = foodData.cookedWeight;
+			const cookingLossPercentage = calculateCookingLoss(
+				rawWeightInGrams,
+				cookedWeightInGrams,
+			);
+
+			// Calculate adjusted macros for the cooked portion
+			const adjustedMacros = formatMacroData(
+				adjustMacrosForCooking(
+					foodData.rawMacros,
+					foodData.rawWeight,
+					foodData.rawWeightUnit,
+					foodData.cookedWeight,
+					foodData.cookedWeightUnit,
+				),
+			);
+
+			// Calculate nutrient density per 100g for both raw and cooked
+			const rawDensityPer100g = formatMacroData(
+				calculateNutrientDensity(
+					foodData.rawMacros,
+					foodData.rawWeight,
+					foodData.rawWeightUnit,
+				),
+			);
+
+			const cookedDensityPer100g = formatMacroData(
+				calculateNutrientDensity(
+					adjustedMacros,
+					foodData.cookedWeight,
+					foodData.cookedWeightUnit,
+				),
+			);
+
+			// Get weight conversions for both raw and cooked weights
+			const rawConversions = getAllWeightConversions(
+				foodData.rawWeight,
+				foodData.rawWeightUnit,
+			);
+			const cookedConversions = getAllWeightConversions(
+				foodData.cookedWeight,
+				foodData.cookedWeightUnit,
+			);
+
+			// Format weight conversions
+			const weightConversions = {
+				raw: {
+					grams: formatWeight(rawConversions.grams),
+					ounces: formatWeight(rawConversions.ounces),
+					pounds: formatWeight(rawConversions.pounds),
+					kilograms: formatWeight(rawConversions.kilograms),
+				},
+				cooked: {
+					grams: formatWeight(cookedConversions.grams),
+					ounces: formatWeight(cookedConversions.ounces),
+					pounds: formatWeight(cookedConversions.pounds),
+					kilograms: formatWeight(cookedConversions.kilograms),
+				},
+			};
+
+			return {
+				cookingLossPercentage: Math.round(cookingLossPercentage * 100) / 100,
+				adjustedMacros,
+				rawDensityPer100g,
+				cookedDensityPer100g,
+				weightConversions,
+			};
+		} catch (error) {
+			console.error("Calculation error:", error);
+			return null;
+		}
+	}, [foodData, isCalculationValid]);
 
 	// Event handlers with proper error handling and state updates
 	const handleFoodDataChange = useCallback((newData: FoodData) => {
@@ -105,7 +195,6 @@ export default function MacroCalculator({ className }: MacroCalculatorProps) {
 					<div className="bg-white rounded-lg shadow-md p-6">
 						<h2 className="text-xl font-semibold mb-4">Calculation Results</h2>
 						<MacroDisplay
-							rawData={foodData}
 							calculationResults={calculationResults}
 							isCalculationValid={isCalculationValid}
 						/>

@@ -1,6 +1,5 @@
 import { createRootRoute, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
-import { ThemeProvider } from "@/components/providers/theme-provider";
 
 import Header from "../components/Header";
 
@@ -10,15 +9,15 @@ import Header from "../components/Header";
  */
 function RootComponent() {
 	return (
-		<ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-			<div className="min-h-screen bg-gray-50">
-				<Header />
-				<main className="flex-1">
-					<Outlet />
-				</main>
-				<TanStackRouterDevtools />
-			</div>
-		</ThemeProvider>
+		// <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+		<div className="min-h-screen bg-gray-50">
+			<Header />
+			<main className="flex-1">
+				<Outlet />
+			</main>
+			<TanStackRouterDevtools />
+		</div>
+		// </ThemeProvider>
 	);
 }
 
