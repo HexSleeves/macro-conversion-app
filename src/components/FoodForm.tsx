@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/select";
 import type { FoodFormProps } from "@/lib/component-types";
 import type { FoodData, WeightUnit } from "@/lib/types";
-import { cn } from "@/lib/utils";
+
 import {
 	validateCookingRatio,
 	validateFoodData,
@@ -84,10 +84,7 @@ export default function FoodForm({
 												field.onChange(e.target.value);
 												handleFormChange({ ...foodData, name: e.target.value });
 											}}
-											className={cn(
-												validationErrors.name &&
-													"border-red-500 focus:border-red-500 focus:ring-red-500",
-											)}
+											className="text-base sm:text-sm h-11 sm:h-10"
 										/>
 									</FormControl>
 									<FormMessage />
@@ -134,11 +131,7 @@ export default function FoodForm({
 																rawWeight: value,
 															});
 														}}
-														className={cn(
-															"flex-1",
-															validationErrors.rawWeight &&
-																"border-red-500 focus:border-red-500 focus:ring-red-500",
-														)}
+														className="flex-1 text-base sm:text-sm h-11 sm:h-10"
 													/>
 												</FormControl>
 												<FormField
@@ -155,7 +148,7 @@ export default function FoodForm({
 																});
 															}}
 														>
-															<SelectTrigger className="w-20 sm:w-24">
+															<SelectTrigger className="w-20 sm:w-24 h-11 sm:h-10">
 																<SelectValue />
 															</SelectTrigger>
 															<SelectContent>
@@ -221,12 +214,7 @@ export default function FoodForm({
 																cookedWeight: value,
 															});
 														}}
-														className={cn(
-															"flex-1",
-															(validationErrors.cookedWeight ||
-																validationErrors.cookingRatio) &&
-																"border-red-500 focus:border-red-500 focus:ring-red-500",
-														)}
+														className="flex-1 text-base sm:text-sm h-11 sm:h-10"
 													/>
 												</FormControl>
 												<FormField
@@ -243,7 +231,7 @@ export default function FoodForm({
 																});
 															}}
 														>
-															<SelectTrigger className="w-20 sm:w-24">
+															<SelectTrigger className="w-20 sm:w-24 h-11 sm:h-10">
 																<SelectValue />
 															</SelectTrigger>
 															<SelectContent>
@@ -310,11 +298,7 @@ export default function FoodForm({
 															},
 														});
 													}}
-													className={cn(
-														"w-full",
-														validationErrors.calories &&
-															"border-red-500 focus:border-red-500 focus:ring-red-500",
-													)}
+													className="w-full text-base sm:text-sm h-11 sm:h-10"
 												/>
 											</FormControl>
 											<FormMessage />
@@ -361,11 +345,7 @@ export default function FoodForm({
 															},
 														});
 													}}
-													className={cn(
-														"w-full",
-														validationErrors.protein &&
-															"border-red-500 focus:border-red-500 focus:ring-red-500",
-													)}
+													className="w-full text-base sm:text-sm h-11 sm:h-10"
 												/>
 											</FormControl>
 											<FormMessage />
@@ -412,11 +392,7 @@ export default function FoodForm({
 															},
 														});
 													}}
-													className={cn(
-														"w-full",
-														validationErrors.carbohydrates &&
-															"border-red-500 focus:border-red-500 focus:ring-red-500",
-													)}
+													className="w-full text-base sm:text-sm h-11 sm:h-10"
 												/>
 											</FormControl>
 											<FormMessage />
@@ -460,11 +436,7 @@ export default function FoodForm({
 															rawMacros: { ...foodData.rawMacros, fat: value },
 														});
 													}}
-													className={cn(
-														"w-full",
-														validationErrors.fat &&
-															"border-red-500 focus:border-red-500 focus:ring-red-500",
-													)}
+													className="w-full text-base sm:text-sm h-11 sm:h-10"
 												/>
 											</FormControl>
 											<FormMessage />
@@ -511,11 +483,7 @@ export default function FoodForm({
 															},
 														});
 													}}
-													className={cn(
-														"w-full",
-														validationErrors.fiber &&
-															"border-red-500 focus:border-red-500 focus:ring-red-500",
-													)}
+													className="w-full text-base sm:text-sm h-11 sm:h-10"
 												/>
 											</FormControl>
 											<FormMessage />
